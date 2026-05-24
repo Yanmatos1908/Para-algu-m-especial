@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Para Sara Albano — com todo o meu amor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a3a5c;
+    --azul-claro: #2e6fa3;
+    --azul-mar: #4a90c4;
+    --azul-ceu: #7ab8d9;
+    --azul-suave: #b8d9ee;
+    --areia: #f5ede0;
+    --areia-escura: #e8d5b7;
+    --creme: #fdf8f2;
+    --rosa-kitty: #ffb7c5;
+    --rosa-kuromi: #c9a0dc;
+    --branco: #ffffff;
+    --texto-escuro: #1a1a2e;
+    --dourado: #c9a227;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    color: var(--texto-escuro);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ===== TELA DE ABERTURA ===== */
+  #abertura {
+    position: fixed;
+    inset: 0;
+    background: var(--azul);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+  #abertura.saindo { opacity: 0; visibility: hidden; }
+
+  .abertura-texto {
+    color: var(--branco);
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 7vw, 3rem);
+    text-align: center;
+    padding: 0 2rem;
+    opacity: 0;
+    animation: surgir 1.5s ease 0.5s forwards;
+    line-height: 1.5;
+  }
+  .abertura-sub {
+    color: var(--azul-suave);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    text-align: center;
+    padding: 1rem 2rem 0;
+    opacity: 0;
+    animation: surgir 1.5s ease 1.5s forwards;
+  }
+  .abertura-btn {
+    margin-top: 3rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--azul-suave);
+    color: var(--azul-suave);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 2px;
+    opacity: 0;
+    animation: surgir 1.5s ease 2.5s forwards;
+    transition: all 0.4s ease;
+  }
+  .abertura-btn:hover, .abertura-btn:active {
+    background: var(--azul-suave);
+    color: var(--azul);
+  }
+
+  /* ondas animadas no fundo da abertura */
+  .onda-abertura {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    opacity: 0.15;
+  }
+
+  /* ===== PÁGINA PRINCIPAL ===== */
+  main { display: none; }
+  main.visivel { display: block; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100svh;
+    background: linear-gradient(180deg, var(--azul) 0%, #1e4d7b 40%, #2e6fa3 70%, #5fa3cc 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  /* ondas no hero */
+  .ondas {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  /* estrelas/bolhas flutuantes */
+  .particula {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    animation: flutuar linear infinite;
+  }
+
+  @keyframes flutuar {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+  }
+
+  .hero-conteudo {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: var(--branco);
+    opacity: 0;
+    animation: surgir 2s ease 0.3s forwards;
+  }
+
+  .hero-data {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--azul-suave);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 13vw, 6rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #ffffff 0%, var(--azul-suave) 50%, var(--rosa-kitty) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    text-shadow: none;
+  }
+
+  .hero-subtitulo {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    color: var(--azul-suave);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-separador {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--azul-suave), transparent);
+    margin: 0 auto 2rem;
+  }
+
+  .hero-frase {
+    font-style: italic;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    color: rgba(255,255,255,0.85);
+    max-width: 320px;
+    line-height: 1.8;
+    margin: 0 auto;
+  }
+
+  /* ===== SEÇÕES ===== */
+  section {
+    padding: 5rem 1.5rem;
+    position: relative;
+  }
+
+  .titulo-secao {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--azul);
+  }
+
+  .titulo-secao.claro { color: var(--branco); }
+
+  .ornamento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .ornamento-linha {
+    width: 40px;
+    height: 1px;
+    background: var(--azul-mar);
+  }
+  .ornamento-simbolo {
+    font-size: 1.2rem;
+    color: var(--azul-mar);
+  }
+  .ornamento.claro .ornamento-linha { background: var(--azul-suave); }
+  .ornamento.claro .ornamento-simbolo { color: var(--azul-suave); }
+
+  /* ===== RELOGIO DO MOMENTO ===== */
+  .secao-momento {
+    background: var(--azul);
+    color: var(--branco);
+    text-align: center;
+  }
+
+  .relogio-container {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    max-width: 380px;
+    margin: 0 auto 2.5rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .relogio-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--azul-suave);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .relogio-numero {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--branco), var(--azul-suave));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .relogio-sub {
+    font-size: 0.9rem;
+    color: var(--azul-suave);
+    font-style: italic;
+  }
+
+  .contador-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .contador-item {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 1rem 0.5rem;
+    text-align: center;
+  }
+
+  .contador-numero {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: 700;
+    color: var(--rosa-kitty);
+    display: block;
+    line-height: 1;
+  }
+
+  .contador-nome {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--azul-suave);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* ===== CARTA PRINCIPAL ===== */
+  .secao-carta {
+    background: var(--creme);
+  }
+
+  .carta {
+    background: var(--branco);
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 8px 60px rgba(26, 58, 92, 0.08), 0 2px 16px rgba(26, 58, 92, 0.05);
+    position: relative;
+    border-top: 3px solid var(--azul-mar);
+  }
+
+  .carta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--azul), var(--azul-mar), var(--rosa-kitty));
+  }
+
+  .carta-paragrafo {
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    color: var(--texto-escuro);
+    margin-bottom: 2rem;
+    text-align: justify;
+  }
+
+  .carta-paragrafo:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-style: italic;
+    float: left;
+    line-height: 0.8;
+    margin-right: 0.1em;
+    color: var(--azul);
+    margin-top: 0.1em;
+  }
+
+  .carta-destaque {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.3rem, 5vw, 1.7rem);
+    color: var(--azul);
+    text-align: center;
+    margin: 2rem 0;
+    line-height: 1.6;
+  }
+
+  .carta-citacao {
+    border-left: 2px solid var(--azul-mar);
+    padding: 1rem 1.2rem;
+    margin: 2rem 0;
+    background: rgba(74, 144, 196, 0.05);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .carta-citacao p {
+    font-style: italic;
+    font-size: clamp(1rem, 3.5vw, 1.15rem);
+    color: var(--azul);
+    line-height: 1.9;
+  }
+
+  .carta-citacao .autor {
+    font-size: 0.85rem;
+    color: var(--azul-claro);
+    margin-top: 0.5rem;
+    font-style: normal;
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== ONIBUS / MEMÓRIAS ===== */
+  .secao-memorias {
+    background: linear-gradient(135deg, #0d2137 0%, #1a3a5c 50%, #1e4d7b 100%);
+    color: var(--branco);
+    overflow: hidden;
+  }
+
+  .memorias-intro {
+    text-align: center;
+    font-style: italic;
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    color: var(--azul-suave);
+    max-width: 400px;
+    margin: 0 auto 3rem;
+    line-height: 1.9;
+  }
+
+  .memoria-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .memoria-card:active { transform: scale(0.98); }
+
+  .memoria-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--azul-mar), var(--rosa-kitty));
+  }
+
+  .memoria-icone {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .memoria-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+    font-style: italic;
+    color: var(--azul-suave);
+    margin-bottom: 0.8rem;
+  }
+
+  .memoria-texto {
+    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+    line-height: 1.9;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ===== ONIBUS ANIMADO ===== */
+  .onibus-container {
+    position: relative;
+    height: 80px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .onibus-trilho {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 10px, transparent 10px, transparent 20px);
+  }
+
+  .onibus-emoji {
+    position: absolute;
+    bottom: 12px;
+    font-size: 2.5rem;
+    animation: passarOnibus 8s linear infinite;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  }
+
+  @keyframes passarOnibus {
+    0% { left: -80px; }
+    100% { left: 110%; }
+  }
+
+  .onibus-frase {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+    color: var(--rosa-kitty);
+    margin-top: 1rem;
+  }
+
+  /* ===== COZINHANDO ===== */
+  .secao-cozinha {
+    background: var(--areia);
+  }
+
+  .cozinha-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+  }
+
+  .cozinha-card {
+    background: var(--branco);
+    border-radius: 10px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(26, 58, 92, 0.06);
+    border-bottom: 2px solid var(--azul-suave);
+  }
+
+  .cozinha-card .icone { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .cozinha-card p { font-size: 0.9rem; color: var(--azul); line-height: 1.6; font-style: italic; }
+
+  .cozinha-texto {
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    text-align: justify;
+    color: var(--texto-escuro);
+  }
+
+  /* ===== UNIVERSO DELA ===== */
+  .secao-universo {
+    background: linear-gradient(180deg, var(--azul) 0%, #0d1b2a 100%);
+    color: var(--branco);
+  }
+
+  .universo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+  }
+
+  .universo-item {
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .universo-item.azul { background: rgba(74, 144, 196, 0.15); border: 1px solid rgba(74, 144, 196, 0.3); }
+  .universo-item.rosa { background: rgba(255, 183, 197, 0.12); border: 1px solid rgba(255, 183, 197, 0.25); }
+  .universo-item.roxo { background: rgba(201, 160, 220, 0.12); border: 1px solid rgba(201, 160, 220, 0.25); }
+  .universo-item.dourado { background: rgba(201, 162, 39, 0.1); border: 1px solid rgba(201, 162, 39, 0.2); }
+
+  .universo-emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  .universo-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--azul-suave);
+    margin-bottom: 0.3rem;
+  }
+  .universo-desc { font-size: 0.8rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+  .universo-texto {
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    color: rgba(255,255,255,0.88);
+    text-align: justify;
+  }
+
+  /* ===== CLARICE LISPECTOR ===== */
+  .secao-clarice {
+    background: #0a1628;
+    color: var(--branco);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .clarice-fundo {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(74,144,196,0.08) 0%, transparent 70%);
+  }
+
+  .clarice-citacoes {
+    max-width: 420px;
+    margin: 0 auto 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .clarice-citacao {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .clarice-citacao p {
+    font-style: italic;
+    font-size: clamp(1.05rem, 4vw, 1.3rem);
+    line-height: 1.9;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .clarice-citacao .para-ela {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    color: var(--azul-suave);
+    margin-top: 1rem;
+    font-style: normal;
+    display: block;
+  }
+
+  .clarice-texto {
+    max-width: 420px;
+    margin: 0 auto;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    color: rgba(255,255,255,0.85);
+    text-align: justify;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== PRAIA / MAR ===== */
+  .secao-mar {
+    background: linear-gradient(180deg, #d4eef9 0%, #a8d8f0 30%, #7ab8d9 60%, #4a90c4 100%);
+    color: var(--azul);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .mar-texto {
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    text-align: justify;
+  }
+
+  .mar-frase {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
+    text-align: center;
+    color: var(--azul);
+    margin: 2rem 0;
+    line-height: 1.5;
+  }
+
+  /* ondas animadas no fundo */
+  .mar-onda {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 60px;
+    background: rgba(26,58,92,0.15);
+    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+    animation: ondulear 4s ease-in-out infinite alternate;
+  }
+  .mar-onda:nth-child(2) {
+    background: rgba(26,58,92,0.1);
+    animation-duration: 6s;
+    bottom: 10px;
+  }
+
+  @keyframes ondulear {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-25%); }
+  }
+
+  /* ===== CINDERELA ===== */
+  .secao-cinderela {
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 50%, #1a1a3e 100%);
+    color: var(--branco);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .estrelas-fundo {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .estrela {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: piscar 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes piscar {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+  }
+
+  .cinderela-texto {
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    color: rgba(255,255,255,0.9);
+    text-align: justify;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cinderela-frase {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    text-align: center;
+    color: var(--rosa-kitty);
+    margin: 2rem 0;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== CARTA FINAL ===== */
+  .secao-final {
+    background: var(--azul);
+    color: var(--branco);
+    text-align: center;
+    padding-bottom: 6rem;
+  }
+
+  .carta-final {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .carta-final p {
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
+    line-height: 2;
+    color: rgba(255,255,255,0.9);
+    text-align: justify;
+    margin-bottom: 2rem;
+  }
+
+  .assinatura {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 8vw, 3rem);
+    color: var(--rosa-kitty);
+    text-align: center;
+    margin-top: 3rem;
+    line-height: 1.4;
+  }
+
+  .coracao-pulsante {
+    font-size: 3rem;
+    display: block;
+    animation: pulsar 1.2s ease-in-out infinite;
+    margin: 1.5rem 0;
+  }
+
+  @keyframes pulsar {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+  }
+
+  /* ===== ANIMAÇÕES DE ENTRADA ===== */
+  @keyframes surgir {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .revelar {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .revelar.visivel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== RODAPÉ ===== */
+  .rodape {
+    background: #080e18;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--creme); }
+  ::-webkit-scrollbar-thumb { background: var(--azul-mar); border-radius: 2px; }
+
+  /* ===== AJUSTES MOBILE ===== */
+  @media (max-width: 360px) {
+    .contador-grid { grid-template-columns: repeat(2, 1fr); }
+    .universo-grid { grid-template-columns: 1fr; }
+    .cozinha-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TELA DE ABERTURA ===== -->
+<div id="abertura">
+  <svg class="onda-abertura" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="white"/>
+    <path d="M0,80 C360,20 720,140 1080,80 C1260,50 1380,90 1440,80 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.4)"/>
+  </svg>
+  <p class="abertura-texto">Para a mulher<br>que mudou tudo</p>
+  <p class="abertura-sub">Uma história de amor,<br>escrita para você, Sara</p>
+  <button class="abertura-btn" onclick="abrirPagina()">✦ Abrir com amor ✦</button>
+</div>
+
+<!-- ===== PÁGINA PRINCIPAL ===== -->
+<main id="pagina-principal">
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- Partículas -->
+    <div class="particula" style="width:8px;height:8px;left:10%;animation-duration:12s;animation-delay:0s"></div>
+    <div class="particula" style="width:5px;height:5px;left:25%;animation-duration:9s;animation-delay:2s"></div>
+    <div class="particula" style="width:12px;height:12px;left:50%;animation-duration:15s;animation-delay:1s"></div>
+    <div class="particula" style="width:6px;height:6px;left:70%;animation-duration:11s;animation-delay:3s"></div>
+    <div class="particula" style="width:9px;height:9px;left:85%;animation-duration:13s;animation-delay:0.5s"></div>
+    <div class="particula" style="width:4px;height:4px;left:40%;animation-duration:10s;animation-delay:4s"></div>
+
+    <div class="hero-conteudo">
+      <p class="hero-data">✦ 16 de março · 18h09 · Para sempre ✦</p>
+      <h1 class="hero-nome">Sara Albano</h1>
+      <p class="hero-subtitulo">feliz aniversário, meu amor</p>
+      <div class="hero-separador"></div>
+      <p class="hero-frase">
+        "Você não aconteceu na minha vida.<br>
+        Você <em>é</em> a minha vida."
+      </p>
+    </div>
+
+    <!-- Ondas -->
+    <svg class="ondas" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,30 1440,40 L1440,80 L0,80 Z" fill="#fdf8f2"/>
+      <path d="M0,60 C240,30 480,80 720,50 C960,20 1200,70 1440,50 L1440,80 L0,80 Z" fill="rgba(253,248,242,0.5)"/>
+    </svg>
+  </section>
+
+  <!-- CONTADOR DO AMOR -->
+  <section class="secao-momento">
+    <h2 class="titulo-secao claro revelar">O tempo que já é nosso</h2>
+    <div class="ornamento claro revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">⟡</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="relogio-container revelar">
+      <p class="relogio-label">Desde aquele 16 de março, às 18h09</p>
+      <div class="relogio-numero" id="tempo-amor">...</div>
+      <p class="relogio-sub">de amor, de nós, de tudo</p>
+    </div>
+
+    <div class="contador-grid revelar">
+      <div class="contador-item">
+        <span class="contador-numero" id="cnt-dias">–</span>
+        <span class="contador-nome">dias</span>
+      </div>
+      <div class="contador-item">
+        <span class="contador-numero" id="cnt-horas">–</span>
+        <span class="contador-nome">horas</span>
+      </div>
+      <div class="contador-item">
+        <span class="contador-numero" id="cnt-min">–</span>
+        <span class="contador-nome">minutos</span>
+      </div>
+      <div class="contador-item">
+        <span class="contador-numero" id="cnt-seg">–</span>
+        <span class="contador-nome">segundos</span>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:2rem;font-style:italic;color:var(--azul-suave);font-size:0.95rem;" class="revelar">
+      cada segundo, cada minuto, cada hora —<br>tudo pertence a nós dois.
+    </p>
+  </section>
+
+  <!-- CARTA PRINCIPAL -->
+  <section class="secao-carta">
+    <h2 class="titulo-secao revelar">Uma carta que nunca acaba</h2>
+    <div class="ornamento revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">✦</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="carta revelar">
+      <p class="carta-paragrafo">
+        Sara. Existe uma palavra que os dicionários guardam, mas que nenhum deles consegue explicar completamente: <em>você</em>. Você é daquelas coisas que a linguagem tenta alcançar e sempre fica um passo atrás. Clarice Lispector, sua amada Clarice, sabia disso quando escrevia sobre o inexplicável — e eu sei disso quando tento te descrever.
+      </p>
+
+      <div class="carta-destaque">
+        "Antes de você, eu existia.<br>
+        Depois de você, eu <em>vivo</em>."
+      </div>
+
+      <p class="carta-paragrafo">
+        Tem momentos na vida que a gente não entende enquanto estão acontecendo. O 16 de março, às 18h09, foi assim. Naquele instante preciso, quando o mundo parou por um fração de segundo — quando os beijos, os abraços, os olhares se encontraram e não quiseram mais se soltar — algo mudou em mim de um jeito que não tem volta. E eu não quero de volta. Eu quero é seguir em frente, ao seu lado, de mãos dadas, para sempre.
+      </p>
+
+      <div class="carta-citacao">
+        <p>
+          "Não é que eu precise de você como o ar que respiro. É que com você, o ar tem outro gosto — mais pleno, mais verdadeiro, como se eu estivesse finalmente respirando do jeito certo."
+        </p>
+      </div>
+
+      <p class="carta-paragrafo">
+        Eu estive com você nos momentos em que tudo pesava. Quando a noite era longa e o coração estava cansado. E eu faço questão de estar — porque você merece alguém que não desaparece quando fica difícil. Alguém que fica. Eu fico. Eu sou esse alguém, Sara. E jamais vou deixá-la.
+      </p>
+
+      <p class="carta-paragrafo">
+        Hoje é seu aniversário. E eu precisava que você soubesse — lendo cada palavra desta página, sentindo cada detalhe que escondi aqui para você encontrar — que você é amada de um jeito que eu nem sei nomear completamente. Mas estou tentando. Estou sempre tentando.
+      </p>
+    </div>
+  </section>
+
+  <!-- ÔNIBUS / MEMÓRIAS DE PASSEIOS -->
+  <section class="secao-memorias">
+    <h2 class="titulo-secao claro revelar">Os ônibus que nos levaram juntos</h2>
+    <div class="ornamento claro revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">🚌</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <p class="memorias-intro revelar">
+      Quantas janelas passaram enquanto a gente ia lado a lado? Quantas ruas desconhecidas viraram memórias nossas? O ônibus tem uma magia estranha — ele pega duas pessoas e transforma a viagem em história.
+    </p>
+
+    <!-- ônibus animado -->
+    <div class="onibus-container revelar">
+      <div class="onibus-trilho"></div>
+      <div class="onibus-emoji">🚌</div>
+    </div>
+    <p class="onibus-frase revelar">você do meu lado, destino nenhum importa</p>
+
+    <div class="memoria-card revelar">
+      <span class="memoria-icone">🪟</span>
+      <p class="memoria-titulo">A janela do ônibus</p>
+      <p class="memoria-texto">
+        Tem algo de muito íntimo em sentar ao lado de alguém num ônibus. O mundo lá fora corre, muda, passa — e a gente fica parado, existindo juntos num espaço pequeno que se torna enorme porque você está nele. Cada vez que embarquei com você, eu sabia: esse trecho do caminho é nosso. Mais nada importa enquanto você está aqui.
+      </p>
+    </div>
+
+    <div class="memoria-card revelar">
+      <span class="memoria-icone">🌆</span>
+      <p class="memoria-titulo">As ruas que a gente descobriu</p>
+      <p class="memoria-texto">
+        Passear com você é uma forma de ver o mundo com olhos que eu não tinha antes. Você aponta coisas que eu passaria sem notar. Uma vitrine, uma planta em cima de um muro, a luz diferente numa tarde. Com você, os passeios têm profundidade — como os livros que você ama, onde cada detalhe esconde um significado.
+      </p>
+    </div>
+
+    <div class="memoria-card revelar">
+      <span class="memoria-icone">🌤️</span>
+      <p class="memoria-titulo">A soneca gostosa da tarde</p>
+      <p class="memoria-texto">
+        Depois da escola, o mundo ainda estava acordado lá fora — e a gente simplesmente fechou os olhos juntos. Aquela soneca da tarde tem um sabor que não existe em nenhum outro momento do dia: a luz ainda entrando pela janela, o cansaço gostoso de quem viveu a manhã, e você do meu lado, quentinha, quietinha. Eu nunca dormi tão bem quanto naquele pedacinho de tarde. Não precisava ser a noite toda — bastou aquele sono curto, leve, nosso, pra eu entender que onde você estiver é onde eu quero descansar.
+      </p>
+    </div>
+  </section>
+
+  <!-- COZINHANDO JUNTOS -->
+  <section class="secao-cozinha">
+    <h2 class="titulo-secao revelar">A cozinha que virou nossa</h2>
+    <div class="ornamento revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">🍳</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="cozinha-grid revelar">
+      <div class="cozinha-card">
+        <span class="icone">🥄</span>
+        <p>A colher que passamos um pro outro sem precisar pedir</p>
+      </div>
+      <div class="cozinha-card">
+        <span class="icone">🍰</span>
+        <p>O doce que você ama — e que me faz querer sempre fazer mais</p>
+      </div>
+      <div class="cozinha-card">
+        <span class="icone">🔥</span>
+        <p>O calor da cozinha e o calor de estar ao seu lado</p>
+      </div>
+      <div class="cozinha-card">
+        <span class="icone">🌿</span>
+        <p>Cada refeição que cozinhamos juntos virou memória afetiva</p>
+      </div>
+    </div>
+
+    <p class="cozinha-texto revelar">
+      Cozinhar com você tem um gosto diferente de tudo. Não é só a comida — é o jeito que você mexe numa panela, é quando a gente divide o espaço apertado sem que isso seja desconforto, pelo contrário. É intimidade. É cotidiano que se transforma em poesia. Cada vez que cozinhamos juntos, eu pensava: é isso. É essa sensação de construir algo juntos, mesmo que seja só um prato de comida, que faz a vida fazer sentido. Com você, até picar cebola parece bonito.
+    </p>
+
+    <p class="cozinha-texto revelar" style="margin-top:1.5rem;">
+      E você ama doce. Isso diz tudo sobre quem você é — alguém que encontra alegria nas coisas que trazem prazer genuíno, sem culpa, sem moderação excessiva. Alguém que sabe aproveitar o que a vida tem de bom. Eu quero ser esse doce também, Sara. A coisa que te faz sorrir sem motivo.
+    </p>
+  </section>
+
+  <!-- UNIVERSO DELA -->
+  <section class="secao-universo">
+    <h2 class="titulo-secao claro revelar">O universo que vive em você</h2>
+    <div class="ornamento claro revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">✧</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="universo-grid revelar">
+      <div class="universo-item azul">
+        <span class="universo-emoji">🌊</span>
+        <p class="universo-nome">O Mar & a Praia</p>
+        <p class="universo-desc">Onde a alma respira fundo</p>
+      </div>
+      <div class="universo-item rosa">
+        <span class="universo-emoji">📚</span>
+        <p class="universo-nome">Os Livros</p>
+        <p class="universo-desc">Mundos que vivem dentro de você</p>
+      </div>
+      <div class="universo-item roxo">
+        <span class="universo-emoji">🖤</span>
+        <p class="universo-nome">Kuromi</p>
+        <p class="universo-desc">Fofa e intensa ao mesmo tempo</p>
+      </div>
+      <div class="universo-item rosa">
+        <span class="universo-emoji">🎀</span>
+        <p class="universo-nome">Hello Kitty</p>
+        <p class="universo-desc">A ternura que te define</p>
+      </div>
+      <div class="universo-item azul">
+        <span class="universo-emoji">💙</span>
+        <p class="universo-nome">O Azul</p>
+        <p class="universo-desc">A sua cor, profunda como você</p>
+      </div>
+      <div class="universo-item dourado">
+        <span class="universo-emoji">👑</span>
+        <p class="universo-nome">Cinderela</p>
+        <p class="universo-desc">A história de amor que merece</p>
+      </div>
+    </div>
+
+    <p class="universo-texto revelar">
+      O que me encanta em você, Sara, é a forma como essas coisas aparentemente diferentes convivem numa mesma pessoa sem contradição — porque em você, tudo faz sentido. Você lê Clarice Lispector e chora com a profundidade das palavras, e no minuto seguinte coloca uma sandália com a Kuromi e acha isso o máximo do mundo. Isso é riqueza humana. Isso é ser inteira. Você é alguém que não se enquadra — e é exatamente por isso que é impossível te esquecer.
+    </p>
+  </section>
+
+  <!-- CLARICE LISPECTOR -->
+  <section class="secao-clarice">
+    <div class="clarice-fundo"></div>
+    <h2 class="titulo-secao claro revelar">Clarice, você, e o que é indizível</h2>
+    <div class="ornamento claro revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">𝄞</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="clarice-citacoes revelar">
+      <div class="clarice-citacao">
+        <p>"Eu não sei o que procuro, mas procuro."</p>
+        <span class="para-ela">— Clarice Lispector<br>e também: eu, antes de te encontrar</span>
+      </div>
+
+      <div class="clarice-citacao">
+        <p>"Felicidade? Nunca tinha ficado tão de perto dela. Era um bem querer de si mesma."</p>
+        <span class="para-ela">— Clarice Lispector<br>e também: o que sinto quando olho para você</span>
+      </div>
+
+      <div class="clarice-citacao">
+        <p>"O que é que eu faço com o amor que tenho? Guardo. Para quando você precisar."</p>
+        <span class="para-ela">— reescrita com amor, para Sara</span>
+      </div>
+    </div>
+
+    <p class="clarice-texto revelar">
+      Você ama Clarice porque Clarice fala do que não tem nome. Fala dos sentimentos que ficam embaixo da pele, que não cabem em explicação, que só podem ser sentidos — nunca completamente descritos. E eu entendo isso, Sara, porque é assim que eu sinto você. Você é o meu inexplicável. A coisa mais verdadeira que já aconteceu comigo, e ao mesmo tempo aquela que eu nunca vou conseguir descrever completamente — não importa quantas palavras eu use.
+    </p>
+    <p class="clarice-texto revelar" style="margin-top:1.5rem;">
+      Clarice escrevia sobre a existência como se ela fosse urgente. E é. A vida não espera. Você não espera. Cada momento ao seu lado tem esse peso — não de fardo, mas de preciosidade. Como algo que precisa ser vivido completamente, sem guardar para depois.
+    </p>
+  </section>
+
+  <!-- MAR -->
+  <section class="secao-mar">
+    <div class="mar-onda"></div>
+    <div class="mar-onda"></div>
+
+    <h2 class="titulo-secao revelar" style="position:relative;z-index:1;">O mar que te chama</h2>
+    <div class="ornamento revelar" style="position:relative;z-index:1;">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">🌊</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <p class="mar-frase revelar" style="position:relative;z-index:1;">
+      "Você e o mar têm a mesma profundidade —<br>
+      quanto mais eu entro, mais me perco."
+    </p>
+
+    <p class="mar-texto revelar" style="position:relative;z-index:1;">
+      Eu imagino você na praia. Seus pés na areia, o vento embaralhando o cabelo, os olhos no horizonte azul — aquele azul que é a sua cor, que é você. Existe algo entre você e o mar que eu entendo sem precisar de explicação: vocês dois são feitos da mesma matéria. Profundos. Vivos. Nunca completamente domados. Sempre se movendo, sempre chegando.
+    </p>
+
+    <p class="mar-texto revelar" style="margin-top:1.5rem;position:relative;z-index:1;">
+      Eu quero ir ao mar com você. Quero sentar na areia ao seu lado enquanto as ondas chegam e vão, e que cada onda que bate seja um "eu te amo" que o oceano está entregando por mim — porque o oceano tem fôlego infinito, e eu precisaria de um tempo assim para dizer tudo que sinto.
+    </p>
+  </section>
+
+  <!-- CINDERELA -->
+  <section class="secao-cinderela">
+    <!-- Estrelas -->
+    <div class="estrelas-fundo" id="estrelas"></div>
+
+    <h2 class="titulo-secao claro revelar" style="position:relative;z-index:1;">A Cinderela que você é</h2>
+    <div class="ornamento claro revelar" style="position:relative;z-index:1;">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">👠</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <p class="cinderela-frase revelar">
+      "Você não precisa do conto de fadas.<br>
+      Você <em>é</em> o conto de fadas."
+    </p>
+
+    <p class="cinderela-texto revelar">
+      Cinderela não é sobre o príncipe. Nunca foi. É sobre uma mulher que carregou peso demais, que foi colocada em lugares onde não pertencia, que foi subestimada — e que mesmo assim, brilhou. Com graça. Com dignidade. Com uma luz que nenhuma situação difícil conseguiu apagar. Soa familiar?
+    </p>
+
+    <p class="cinderela-texto revelar" style="margin-top:1.5rem;">
+      Sara, você é assim. Você passou por momentos que dobrariam qualquer um — e ficou de pé. Não sem dor, não sem custo, mas ficou. E você brilha com uma intensidade que eu enxergo todo dia, em cada coisa pequena que você faz. Na forma como você ri. No jeito que você lê. No amor que você tem pelas coisas que ama. Você tem o coração de uma heroína de conto de fadas — e a realidade de uma mulher inteira, complexa, real, que é muito mais bonita do que qualquer ficção.
+    </p>
+
+    <p class="cinderela-texto revelar" style="margin-top:1.5rem;">
+      E a sapatilha? Ela já estava no lugar certo. Você não precisa que ninguém venha te encontrar. Eu simplesmente tive a sorte de aparecer quando você já era quem é — e é exatamente quem você é que eu amo.
+    </p>
+  </section>
+
+  <!-- CARTA FINAL -->
+  <section class="secao-final">
+    <h2 class="titulo-secao claro revelar">Para sempre, e além</h2>
+    <div class="ornamento claro revelar">
+      <div class="ornamento-linha"></div>
+      <span class="ornamento-simbolo">♾</span>
+      <div class="ornamento-linha"></div>
+    </div>
+
+    <div class="carta-final">
+      <p class="revelar">
+        Sara. Eu não sei fazer promessas perfeitas porque não existe amor perfeito — existe amor real. E o meu amor por você é dos mais reais que eu já senti. É bagunçado às vezes, é intenso sempre, é constante de um jeito que me surpreende até a mim mesmo. Mas é meu, e é seu, e não vai a lugar nenhum.
+      </p>
+
+      <p class="revelar">
+        Eu estive com você nos piores momentos — e eu faço questão de estar nos melhores também. Nos ônibus, na cozinha, na cama, na rua, na praia, nos silêncios que não precisam ser preenchidos. Em todo lugar que você for, eu quero ser a presença constante que você merece. A mão que segura quando aperta. O abraço que não precisa de motivo. O olhar que te encontra do outro lado da sala.
+      </p>
+
+      <p class="revelar">
+        Hoje você faz aniversário. E o maior presente que eu poderia te dar não cabe em caixa — é a certeza de que você é amada de um jeito profundo, verdadeiro e inabalável. Que você não está sozinha. Que você importa — não pelo que faz, não pelo que dá, mas por ser quem você é, simplesmente.
+      </p>
+
+      <p class="revelar">
+        Você ama livros porque eles te levam a lugares que a vida ordinária não alcança. Pois saiba: você me levou a um lugar assim. Um lugar novo, mais bonito, onde as coisas têm mais cor e o tempo passa diferente. Você é o melhor livro que já li — e eu quero reler para sempre.
+      </p>
+
+      <span class="coracao-pulsante revelar">💙</span>
+
+      <div class="assinatura revelar">
+        Com todo o amor que existe em mim,<br>
+        <em>para você,<br>Sara Albano</em>
+      </div>
+
+      <p style="margin-top:3rem;font-style:italic;color:rgba(255,255,255,0.5);font-size:0.9rem;" class="revelar">
+        16 de março · 18h09 · o começo de tudo
+      </p>
+    </div>
+  </section>
+
+  <div class="rodape">
+    feito com amor infinito · para Sara Albano · feliz aniversário 💙
+  </div>
+
+</main>
+
+<script>
+  // ===== ABERTURA =====
+  function abrirPagina() {
+    document.getElementById('abertura').classList.add('saindo');
+    const main = document.getElementById('pagina-principal');
+    setTimeout(() => { main.classList.add('visivel'); iniciar(); }, 1200);
+  }
+
+  // ===== CONTADOR DO AMOR =====
+  function atualizarContador() {
+    const inicio = new Date('2026-03-16T18:09:00');
+    const agora = new Date();
+    const diff = agora - inicio;
+
+    if (diff < 0) return;
+
+    const segundos = Math.floor(diff / 1000) % 60;
+    const minutos = Math.floor(diff / (1000 * 60)) % 60;
+    const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const meses = Math.floor(dias / 30);
+    const anosTotal = Math.floor(dias / 365);
+    const mesesResto = Math.floor((dias % 365) / 30);
+    const diasResto = dias % 30;
+
+    // texto principal
+    let textoTempo = '';
+    if (anosTotal > 0) textoTempo += `${anosTotal}a `;
+    if (mesesResto > 0 || anosTotal > 0) textoTempo += `${mesesResto}m `;
+    textoTempo += `${diasResto}d`;
+
+    document.getElementById('tempo-amor').textContent = textoTempo;
+    document.getElementById('cnt-dias').textContent = dias.toLocaleString('pt-BR');
+    document.getElementById('cnt-horas').textContent = String(horas).padStart(2, '0');
+    document.getElementById('cnt-min').textContent = String(minutos).padStart(2, '0');
+    document.getElementById('cnt-seg').textContent = String(segundos).padStart(2, '0');
+  }
+
+  // ===== ESTRELAS NA SEÇÃO CINDERELA =====
+  function criarEstrelas() {
+    const container = document.getElementById('estrelas');
+    if (!container) return;
+    for (let i = 0; i < 60; i++) {
+      const e = document.createElement('div');
+      e.className = 'estrela';
+      e.style.left = Math.random() * 100 + '%';
+      e.style.top = Math.random() * 100 + '%';
+      e.style.animationDelay = Math.random() * 3 + 's';
+      e.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+      e.style.width = e.style.height = (1 + Math.random() * 2) + 'px';
+      container.appendChild(e);
+    }
+  }
+
+  // ===== REVEAL ON SCROLL =====
+  function iniciarObservador() {
+    const elementos = document.querySelectorAll('.revelar');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visivel');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    elementos.forEach(el => observer.observe(el));
+  }
+
+  function iniciar() {
+    criarEstrelas();
+    atualizarContador();
+    setInterval(atualizarContador, 1000);
+    setTimeout(iniciarObservador, 100);
+  }
+</script>
+</body>
+</html>
